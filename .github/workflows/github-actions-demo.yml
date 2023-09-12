@@ -33,8 +33,9 @@ jobs:
         run: npm install -g appcenter-cli
 
       - name: Log in to App Center
-        run: appcenter login --token ${{ secrets.APP_CENTER_API_TOKEN }}
-
+        run: |
+          appcenter login --token ${{ secrets.APP_CENTER_API_TOKEN }}
+          echo "Logged in to App Center"
 
       - name: Distribute to AppCenter
         uses: wzieba/AppCenter-Github-Action@v1.3.2

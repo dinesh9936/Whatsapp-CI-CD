@@ -1,59 +1,32 @@
-name: Androi CI/CD
-
+name: Generate APK
 on:
   push:
-    branches:
-      - master  # You can change this to the branch you want to trigger the workflow on
+    branches: [ master ]
 
 jobs:
-  build:
-    name: Build and Test
+  # Run Unit Tests etc before Generating APK here.
+  # ....
+
+  # A job to generate debug APK and upload on Github Artifacts
+  apk:
+    name: Generate APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v1
+      - name: set up JDK
+        uses: actions/setup-java@v1
         with:
-          distribution: 'adopt'
           java-version: '20'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
+      - name: Grant Permission to Execute
+        run: chmod +x gradlew
+
+      - name: Build debug APK
+        run: bash ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK to Github Artifacts
+        uses: actions/upload-artifact@v1
         with:
-          sdk-version: '30'
-
-      - name: Start emulator
-        run: |
-          echo "no" | avdmanager create avd -n emulator -k "system-images;android-30;google_apis;x86_64"
-          emulator -avd emulator -no-audio -no-window -gpu swiftshader_indirect &
-          android-wait-for-emulator
-          adb shell input keyevent 82
-          sleep 5  # Sleep for a few seconds to allow emulator to fully start
-
-      - name: Build and Test Android
-        run: |
-          chmod +x ./gradlew
-          ./gradlew build connectedCheck  # Adjust this command based on your Android project setup
-        env:
-          CI: true  # This is commonly used to enable non-interactive mode in Android Gradle builds
-
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/*.apk  # Adjust the path to your generated APK(s)
-
-  deploy:
-    name: Deploy to Google Play Store or other services
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: app-debug
-
-    # You can add steps here to deploy your Android app to Google Play Store or other services.
+          name: app
+          path: app/build/outputs/apk/debug/app-debug.apk

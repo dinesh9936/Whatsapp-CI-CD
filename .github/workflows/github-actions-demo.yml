@@ -29,20 +29,9 @@ jobs:
           name: app
           path: app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Install App Center CLI
-        run: npm install -g appcenter-cli
-
-      - name: Log in to App Center
+      - name: Upload APK to Diawi
         run: |
-          appcenter login --token ${{ secrets.APP_CENTER_API_TOKEN }}
-          echo "Logged in to App Center"
-
-      - name: Distribute to AppCenter
-        uses: wzieba/AppCenter-Github-Action@v1.3.2
-        with:
-            appName: wajahatkarim3/Actions-Demo
-            token: ${{ secrets.APP_CENTER_TOKEN }}
-            group: public
-            file: app/build/outputs/apk/debug/app-debug.apk
-            debug: false
-
+            curl -F "token=DIAWI_UPLOAD_TOKEN" \
+            -F "file=@app/build/outputs/apk/debug/app-debug.apk" \
+            https://upload.diawi.com/
+          

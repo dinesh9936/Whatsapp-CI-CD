@@ -1,4 +1,4 @@
-name: Android CI/CD
+name: Androi CI/CD
 
 on:
   push:

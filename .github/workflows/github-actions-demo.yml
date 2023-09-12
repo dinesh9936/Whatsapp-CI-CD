@@ -33,7 +33,7 @@ jobs:
         run: npm install -g appcenter-cli
 
       - name: Log in to App Center
-        run: appcenter login --token '0c93f299-d0f3-4825-bc72-cfd6a25919ed'
+        run: appcenter login --token '228660117af16a7d12550f22838ce35afa7537c5'
 
       - name: Distribute to AppCenter
         uses: wzieba/AppCenter-Github-Action@v1.3.2

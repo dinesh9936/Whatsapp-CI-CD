@@ -29,6 +29,9 @@ jobs:
           name: app
           path: app/build/outputs/apk/debug/app-debug.apk
 
+      - name: Install App Center CLI
+        run: npm install -g appcenter-cli
+
       - name: Log in to App Center
         run: appcenter login --token '0c93f299-d0f3-4825-bc72-cfd6a25919ed'
 

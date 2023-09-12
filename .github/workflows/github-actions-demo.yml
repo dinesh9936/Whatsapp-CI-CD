@@ -1,36 +1,46 @@
-name: Android Build and Test
+name: Android CI/CD
 
 on:
   push:
     branches:
-      - master
+      - master  # You can change this to the branch you want to trigger the workflow on
 
 jobs:
   build:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Java
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
+          distribution: 'adopt'
           java-version: '20'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
-        with:
-          sdk-version: '30'
-
-      - name: Create and start emulator
-        run: |
-          echo "no" | avdmanager --verbose create avd --force --name "TestEmulator" --abi "google_apis/x86_64" --package "system-images;android-30;google_apis;x86_64"
-          emulator -avd "TestEmulator" -no-window -no-audio -gpu off &
-          android-wait-for-emulator
-          adb shell input keyevent 82
-
-      - name: Build and run tests
+      - name: Build and Test Android
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug connectedCheck
+          ./gradlew build connectedCheck  # Adjust this command based on your Android project setup
+        env:
+          CI: true  # This is commonly used to enable non-interactive mode in Android Gradle builds
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/*.apk  # Adjust the path to your generated APK(s)
+
+  deploy:
+    name: Deploy to Google Play Store or other services
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: app-debug
+
+    # You can add steps here to deploy your Android app to Google Play Store or other services.

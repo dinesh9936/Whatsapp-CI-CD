@@ -31,12 +31,10 @@ jobs:
 
       - name: Install App Center CLI
         run: npm install -g appcenter-cli
-
-      - name: Distribute to AppCenter
-        uses: wzieba/AppCenter-Github-Action@v1.3.2
-        with:
-          name: Log in to App Center
-          run: appcenter login --token ${{ secrets.APP_CENTER_API_TOKEN }}
-          group: public
-          file: app/build/outputs/apk/debug/app-debug.apk
-          debug: false
+      - name: Upload APK to App Center
+        run: |
+            npm install -g appcenter-cli
+            appcenter login --token ${{ secrets.APP_CENTER_API_TOKEN }}
+            appcenter distribute release -f app/build/outputs/apk/debug/app-debug.apk -g Narayna
+            env:
+              APP_CENTER_API_TOKEN: ${{ secrets.APP_CENTER_API_TOKEN }}

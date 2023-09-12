@@ -36,7 +36,7 @@ jobs:
         uses: wzieba/AppCenter-Github-Action@v1.3.2
         with:
           appName: wajahatkarim3/Actions-Demo
-          token: '228660117af16a7d12550f22838ce35afa7537c5'
+          token: ${{ secrets.APP_CENTER_TOKEN }}
           group: public
           file: app/build/outputs/apk/debug/app-debug.apk
           debug: false

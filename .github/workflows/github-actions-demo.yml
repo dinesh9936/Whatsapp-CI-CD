@@ -28,9 +28,6 @@ jobs:
         with:
           name: app
           path: app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Install App Center CLI
-        run: npm install -g appcenter-cli
       - name: Upload APK to App Center
         run: |
             npm install -g appcenter-cli

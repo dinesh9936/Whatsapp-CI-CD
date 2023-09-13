@@ -35,7 +35,7 @@ jobs:
             appName: wajahatkarim3/Actions-Demo
             token: ${{ secrets.APP_CENTER_API_TOKEN }}
             group: "Tester"
-            file: app/build/outputs/apk/release/app-release.apk  # Path to your APK
+            file: app/build/outputs/apk/debug/app-debug.apk  # Path to your APK
             debug: false
 
   #      - name: Upload APK to Diawi

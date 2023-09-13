@@ -32,7 +32,7 @@ jobs:
       - name: Upload to App Center
         uses: wzieba/AppCenter-Github-Action@v1.3.2
         with:
-            appName: "Maxwell"
+            appName: "Whatsapp"
             token: ${{ secrets.APP_CENTER_API_TOKEN }}
             group: "Tester"
             file: app/build/outputs/apk/release/app-release.apk  # Path to your APK

@@ -29,11 +29,20 @@ jobs:
           name: app
           path: app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Upload APK to Diawi
-        run: |
-            curl -F "token=${{ secrets.DIAWI_UPLOAD_TOKEN }}" \
-            -F "file=@app/build/outputs/apk/debug/app-debug.apk" \
-            https://upload.diawi.com/
-        env:
-          DIAWI_UPLOAD_TOKEN: ${{ secrets.DIAWI_UPLOAD_TOKEN }}
+      - name: Upload to App Center
+        uses: wzieba/AppCenter-Github-Action@v1.3.2
+        with:
+            appName: Maxwell App
+            token: ${{ secrets.APP_CENTER_API_TOKEN }}
+            group: Tester
+            file: app/build/outputs/apk/release/app-release.apk  # Path to your APK
+            debug: false
+
+  #      - name: Upload APK to Diawi
+#        run: |
+#            curl -F "token=${{ secrets.DIAWI_UPLOAD_TOKEN }}" \
+#            -F "file=@app/build/outputs/apk/debug/app-debug.apk" \
+#            https://upload.diawi.com/
+#        env:
+#          DIAWI_UPLOAD_TOKEN: ${{ secrets.DIAWI_UPLOAD_TOKEN }}
 

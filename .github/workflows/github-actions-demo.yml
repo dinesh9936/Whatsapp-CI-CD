@@ -32,9 +32,9 @@ jobs:
       - name: Upload to App Center
         uses: wzieba/AppCenter-Github-Action@v1.3.2
         with:
-            appName: Maxwell App
+            appName: "Maxwell"
             token: ${{ secrets.APP_CENTER_API_TOKEN }}
-            group: Tester
+            group: "Tester"
             file: app/build/outputs/apk/release/app-release.apk  # Path to your APK
             debug: false
 

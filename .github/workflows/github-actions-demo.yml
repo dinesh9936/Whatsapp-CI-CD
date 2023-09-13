@@ -36,7 +36,7 @@ jobs:
           token: ${{ secrets.APP_CENTER_API_TOKEN }}
           group: "Tester"
           file: app/build/outputs/apk/debug/app-debug.apk
-          debug: false
+          debug: true
 
   #      - name: Upload APK to Diawi
 #        run: |

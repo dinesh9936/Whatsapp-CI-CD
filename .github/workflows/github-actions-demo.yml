@@ -13,10 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js 17.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: '17.x'
+      - name: Set up Node.js 17.x with NVM
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm install 17
+          nvm use 17
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools

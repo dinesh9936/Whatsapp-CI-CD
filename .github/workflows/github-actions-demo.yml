@@ -1,9 +1,9 @@
-name: Android CI with Firebase Distribution
+name: Build & Upload to Firebase App Distribution
 
 on:
   push:
     branches:
-      - master  # Replace with your default branch
+      - master  # Adjust the branch as needed
 
 jobs:
   build:
@@ -13,18 +13,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
+      - name: Set up Node.js 17.x
+        uses: actions/setup-node@v2
         with:
-          java-version: '20'  # Use the desired Java version
+          node-version: '17.x'
 
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Upload to Firebase Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      - name: set up JDK 20
+        uses: actions/setup-java@v1
         with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}  # Firebase App ID
-          token: ${{ secrets.FIREBASE_TOKEN }}    # Firebase Token
-          groups: Debug      # Distribution Group (e.g., 'testers')
-          file: ./app/build/outputs/apk/debug/app-debug.apk  # Path to your APK
+          java-version: '20'
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload Artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: Debug
+          file: app/build/outputs/apk/debug/app-debug.apk

@@ -1,28 +1,30 @@
-name: Android CI
+name: Android CI with Firebase Distribution
 
 on:
   push:
     branches:
-      - master
-jobs:
-   build:
+      - master  # Replace with your default branch
 
+jobs:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-     -  uses: actions/checkout@v2
-     -  name: Set up JDKd
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-           java-version: '20'
-     - name: Cache Gradle dependencies
-       uses: actions/cache@v2
-       with:
-          path: |
-            ~/ .gradle/caches
-            ~/ .gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-     - name: Build with Gradle
-       run: ./gradlew build 
-    
+          java-version: '20'  # Use the desired Java version
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload to Firebase Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}  # Firebase App ID
+          token: ${{ secrets.FIREBASE_TOKEN }}    # Firebase Token
+          groups: Debug      # Distribution Group (e.g., 'testers')
+          file: ./app/build/outputs/apk/debug/app-debug.apk  # Path to your APK
